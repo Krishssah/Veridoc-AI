@@ -1,0 +1,14 @@
+venv/
+__pycache__/
+*.pyc
+
+uploads/
+upload/
+result/
+temp_services/
+
+dataset/
+data set/
+test_images/
+
+.env

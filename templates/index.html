@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>VeriDoc AI | Document Intelligence</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=11">
+</head>
+
+<body>
+
+    <!-- Background -->
+    <div class="grid-background"></div>
+    <div class="orb orb-one"></div>
+    <div class="orb orb-two"></div>
+
+    <div class="app">
+
+        <!-- ================= HEADER ================= -->
+
+        <header class="topbar">
+
+            <div class="brand">
+
+                <div class="logo">
+                    🛡️
+                </div>
+
+                <div>
+                    <h1>VeriDoc <span>AI</span></h1>
+                    <p>Document Intelligence & Fraud Screening</p>
+                </div>
+
+            </div>
+
+            <div class="header-right">
+
+                <div class="session">
+                    SESSION <span id="sessionId">VD-00001</span>
+                </div>
+
+                <div class="system-status">
+                    <span></span>
+                    SYSTEM ONLINE
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- ================= HERO ================= -->
+
+        <section class="hero">
+
+            <div>
+
+                <div class="ai-badge">
+                    <span>✦</span>
+                    AI-POWERED DOCUMENT FORENSICS
+                </div>
+
+                <h2>
+                    Verify smarter.
+                    <br>
+                    <span>Detect deeper.</span>
+                </h2>
+
+                <p>
+                    Analyze identity documents using OCR, visual
+                    intelligence and automated risk assessment.
+                </p>
+
+            </div>
+
+            <div class="hero-stat">
+
+                <span>ENGINE STATUS</span>
+
+                <strong>
+                    <i></i>
+                    READY
+                </strong>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= DASHBOARD ================= -->
+
+        <main class="dashboard">
+
+
+            <!-- ================= DOCUMENT VIEWER ================= -->
+
+            <section class="panel document-panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <small>01 / DOCUMENT INPUT</small>
+                        <h3>Document Workspace</h3>
+                    </div>
+
+                    <div class="panel-icon">
+                        ◈
+                    </div>
+
+                </div>
+
+
+                <!-- Upload -->
+
+                <div id="dropZone" class="drop-zone">
+
+                    <div class="upload-content">
+
+                        <div class="upload-symbol">
+                            ↑
+                        </div>
+
+                        <h4>Drop document here</h4>
+
+                        <p>
+                            Drag & drop or click to select a document
+                        </p>
+
+                        <span>
+                            JPG • JPEG • PNG • PDF
+                        </span>
+
+                    </div>
+
+                    <!-- Supports image + PDF -->
+                    <input
+                        type="file"
+                        id="document"
+                        name="document"
+                        accept=".jpg,.jpeg,.png,.pdf,image/jpeg,image/png,application/pdf"
+                        hidden
+                    >
+
+                </div>
+
+
+                <!-- Document preview -->
+
+                <div id="viewer" class="viewer">
+
+                    <div class="viewer-toolbar">
+
+                        <div class="viewer-title">
+                            DOCUMENT PREVIEW
+                        </div>
+
+                        <div class="viewer-controls">
+
+                            <button
+                                id="zoomOut"
+                                type="button"
+                            >
+                                −
+                            </button>
+
+                            <button
+                                id="zoomReset"
+                                type="button"
+                            >
+                                100%
+                            </button>
+
+                            <button
+                                id="zoomIn"
+                                type="button"
+                            >
+                                +
+                            </button>
+
+                            <button
+                                id="rotateBtn"
+                                type="button"
+                            >
+                                ↻
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="image-area">
+
+                        <div class="scan-frame">
+
+                            <!-- Image preview -->
+                            <img
+                                id="documentPreview"
+                                alt="Document preview"
+                            >
+
+                            <!-- PDF preview -->
+                            <iframe
+                                id="pdfPreview"
+                                title="PDF document preview"
+                                style="
+                                    display:none;
+                                    width:100%;
+                                    height:500px;
+                                    border:none;
+                                    border-radius:12px;
+                                    background:#ffffff;
+                                "
+                            ></iframe>
+
+                            <div id="scanOverlay"></div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="file-details">
+
+                        <div>
+
+                            <strong id="previewName">
+                                Document
+                            </strong>
+
+                            <span id="previewSize">
+                                0 KB
+                            </span>
+
+                        </div>
+
+                        <button
+                            id="removeFile"
+                            type="button"
+                        >
+                            Remove
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Analyze button -->
+
+                <button
+                    id="analyzeButton"
+                    class="analyze-button"
+                    type="button"
+                >
+
+                    <span class="button-icon">✦</span>
+
+                    <span>Run AI Verification</span>
+
+                    <strong>→</strong>
+
+                </button>
+
+
+                <!-- Scanning -->
+
+                <div id="scanning" class="scanning">
+
+                    <div class="scanner-box">
+
+                        <div class="scanner-grid"></div>
+
+                        <div class="scanner-line"></div>
+
+                        <span>AI</span>
+
+                    </div>
+
+                    <h4>Analyzing document...</h4>
+
+                    <p>
+                        OCR → Image Analysis → Risk Assessment
+                    </p>
+
+                    <div class="loading-track">
+                        <div></div>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= RISK PANEL ================= -->
+
+            <section class="panel risk-panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <small>02 / SECURITY ASSESSMENT</small>
+                        <h3>Risk Intelligence</h3>
+                    </div>
+
+                    <div class="live-tag">
+                        LIVE
+                    </div>
+
+                </div>
+
+
+                <!-- Risk circle -->
+
+                <div class="risk-wrapper">
+
+                    <div
+                        id="riskCircle"
+                        class="risk-circle"
+                    >
+
+                        <div class="risk-circle-inner">
+
+                            <strong id="score">
+                                --
+                            </strong>
+
+                            <span>
+                                RISK SCORE
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="risk-status">
+
+                    <span id="riskBadge">
+                        WAITING FOR DOCUMENT
+                    </span>
+
+                    <p id="riskMessage">
+                        Upload a document to start verification.
+                    </p>
+
+                </div>
+
+
+                <!-- Risk factors -->
+
+                <div class="risk-factors">
+
+                    <div class="factor">
+                        <span>Document Integrity</span>
+                        <strong id="integrityValue">--</strong>
+                    </div>
+
+                    <div class="factor">
+                        <span>OCR Confidence</span>
+                        <strong id="ocrConfidence">--</strong>
+                    </div>
+
+                    <div class="factor">
+                        <span>Visual Authenticity</span>
+                        <strong id="visualConfidence">--</strong>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= VERIFICATION PIPELINE ================= -->
+
+            <section class="panel pipeline-panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <small>03 / PROCESSING PIPELINE</small>
+                        <h3>Verification Flow</h3>
+                    </div>
+
+                    <div class="panel-icon">
+                        ◎
+                    </div>
+
+                </div>
+
+
+                <div class="pipeline">
+
+                    <div
+                        class="pipeline-step"
+                        id="uploadStep"
+                    >
+
+                        <div class="step-icon">
+                            01
+                        </div>
+
+                        <div>
+                            <strong>Document Upload</strong>
+                            <span>Waiting for input</span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="pipeline-line"></div>
+
+
+                    <div
+                        class="pipeline-step"
+                        id="ocrStep"
+                    >
+
+                        <div class="step-icon">
+                            02
+                        </div>
+
+                        <div>
+                            <strong>OCR Extraction</strong>
+                            <span>Text recognition</span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="pipeline-line"></div>
+
+
+                    <div
+                        class="pipeline-step"
+                        id="visualStep"
+                    >
+
+                        <div class="step-icon">
+                            03
+                        </div>
+
+                        <div>
+                            <strong>Visual Analysis</strong>
+                            <span>Manipulation detection</span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="pipeline-line"></div>
+
+
+                    <div
+                        class="pipeline-step"
+                        id="riskStep"
+                    >
+
+                        <div class="step-icon">
+                            04
+                        </div>
+
+                        <div>
+                            <strong>Risk Assessment</strong>
+                            <span>Security scoring</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= SIGNALS ================= -->
+
+            <section class="panel signals-panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <small>04 / SECURITY SIGNALS</small>
+                        <h3>Verification Signals</h3>
+                    </div>
+
+                    <div class="shield-small">
+                        🛡
+                    </div>
+
+                </div>
+
+
+                <div class="signals">
+
+                    <div class="signal">
+
+                        <div class="signal-icon">
+                            OCR
+                        </div>
+
+                        <div>
+                            <strong>Text Detection</strong>
+
+                            <span id="ocrSignal">
+                                Pending
+                            </span>
+                        </div>
+
+                        <b id="ocrSignalBadge">
+                            —
+                        </b>
+
+                    </div>
+
+
+                    <div class="signal">
+
+                        <div class="signal-icon">
+                            IMG
+                        </div>
+
+                        <div>
+                            <strong>Image Quality</strong>
+
+                            <span id="imageSignal">
+                                Pending
+                            </span>
+                        </div>
+
+                        <b id="imageSignalBadge">
+                            —
+                        </b>
+
+                    </div>
+
+
+                    <div class="signal">
+
+                        <div class="signal-icon">
+                            VIS
+                        </div>
+
+                        <div>
+                            <strong>Visual Integrity</strong>
+
+                            <span id="visualSignal">
+                                CNN pending
+                            </span>
+                        </div>
+
+                        <b id="visualSignalBadge">
+                            —
+                        </b>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= WHY SCORE ================= -->
+
+            <section class="panel explanation-panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <small>05 / AI EXPLANATION</small>
+                        <h3>Why This Score?</h3>
+                    </div>
+
+                    <div class="panel-icon">
+                        ✦
+                    </div>
+
+                </div>
+
+
+                <div id="explanation" class="explanation">
+
+                    <div class="explanation-item">
+
+                        <span>○</span>
+
+                        <p>
+                            Upload a document to generate
+                            verification insights.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= OCR ================= -->
+
+            <section class="panel ocr-panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <small>06 / OCR INTELLIGENCE</small>
+                        <h3>Extracted Information</h3>
+                    </div>
+
+                    <div class="copy-area">
+
+                        <button
+                            id="copyText"
+                            type="button"
+                        >
+                            COPY
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <pre id="text">No document analyzed yet.</pre>
+
+            </section>
+
+
+            <!-- ================= HISTORY ================= -->
+
+            <section class="panel history-panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <small>07 / SESSION HISTORY</small>
+                        <h3>Recent Checks</h3>
+                    </div>
+
+                    <button
+                        id="clearHistory"
+                        class="clear-history"
+                        type="button"
+                    >
+                        Clear
+                    </button>
+
+                </div>
+
+
+                <div id="history" class="history">
+
+                    <div class="empty-history">
+                        No previous verification sessions.
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+
+        <!-- ================= FOOTER ================= -->
+
+        <footer>
+
+            <div>
+                <strong>VERIDOC AI</strong>
+                <span>DOCUMENT INTELLIGENCE PLATFORM</span>
+            </div>
+
+            <div>
+                Prototype • AI-assisted screening
+            </div>
+
+        </footer>
+
+    </div>
+
+
+    <div id="toast" class="toast">
+        Copied to clipboard
+    </div>
+
+
+    <script src="{{ url_for('static', filename='script.js') }}?v=11"></script>
+
+</body>
+
+</html>
